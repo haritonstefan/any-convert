@@ -27,28 +27,32 @@ export default class Document extends BaseConverter {
       payload: {
         output: 'stream',
         parse: true,
-        maxBytes: '1073741824'
+        maxBytes: '1073741824',
+        allow: 'multipart/form-data'
       },
       validate: {
         payload: {
           file: {
-            hapi: {
-              filename: Joi.string(),
-              headers: {
-                'content-disposition': Joi.any(),
-                'content-type': Joi.any().valid(
+            'hapi': {
+              'headers': {
+                'content-type': Joi.string().valid(
                   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                   'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
+                  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                   'application/msword',
+                  'application/vnd.ms-excel',
                   'application/vnd.palm',
                   'application/rtf',
                   'application/vnd.stardivision.writer',
                   'application/vnd.sun.xml.writer.template',
                   'application/vnd.oasis.opendocument.text'
-                ).required(),
+                )
               }
             }
           }
+        },
+        options: {
+          allowUnknown: true
         }
       }
     }
